@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.foundit"> <!-- This matches your package name -->
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:allowBackup="true"
@@ -12,13 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FoundIT"
-        tools:targetApi="32">
+        tools:targetApi="31">
 
-        <!--
-          THIS IS THE PART THAT WAS MISSING:
-          It tells Android that 'MainActivity' exists and
-          that it's the main screen that should launch first.
-        -->
+        <!-- This is your main screen (already existed) -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -27,7 +22,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- End of the part that was missing -->
+
+        <!-- ▼▼▼ THIS IS THE NEW PART ▼▼▼ -->
+        <!-- This declares our new "Post a Lost Item" screen -->
+        <activity
+            android:name=".PostLostItemActivity"
+            android:exported="false">
+            <!-- android:exported="false" means only our app can open this screen -->
+        </activity>
+        <!-- ▲▲▲ END OF NEW PART ▲▲▲ -->
 
     </application>
 
