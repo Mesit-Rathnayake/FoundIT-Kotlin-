@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".PostLostItemActivity">
+    tools:context=".PostFoundItemActivity">
 
     <TextView
-        android:id="@+id/post_lost_item_title"
+        android:id="@+id/post_found_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Post a Lost Item"
+        android:text="Post a Found Item"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,11 +22,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:hint="What did you lose? (e.g., Black Wallet)"
+        android:hint="What did you find? (e.g., Black Wallet)"
         android:inputType="textCapWords"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/post_lost_item_title" />
+        app:layout_constraintTop_toBottomOf="@id/post_found_item_title" />
 
     <EditText
         android:id="@+id/edit_text_item_description"
@@ -65,7 +65,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Where did you last see it?"
+        android:hint="Where did you find it?"
         android:inputType="textCapWords"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +75,7 @@
         android:id="@+id/button_post_item"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:text="Post Lost Item"
+        android:text="Post Found Item"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

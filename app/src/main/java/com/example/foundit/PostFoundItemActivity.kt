@@ -10,7 +10,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 
-class PostLostItemActivity : AppCompatActivity() {
+class PostFoundItemActivity : AppCompatActivity() {
 
     private lateinit var itemImageView: ImageView
     private var selectedImageUri: Uri? = null
@@ -27,7 +27,7 @@ class PostLostItemActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // This links the activity to its layout file
-        setContentView(R.layout.activity_post_lost_item)
+        setContentView(R.layout.activity_post_found_item)
 
         // Get references to the views from the layout
         val itemTitleEditText = findViewById<EditText>(R.id.edit_text_item_title)
@@ -43,7 +43,7 @@ class PostLostItemActivity : AppCompatActivity() {
             pickImageLauncher.launch("image/*")
         }
 
-        // Set a click listener for the "Post Lost Item" button
+        // Set a click listener for the "Post Found Item" button
         postItemButton.setOnClickListener {
             // Get the text the user entered
             val title = itemTitleEditText.text.toString()
@@ -53,7 +53,7 @@ class PostLostItemActivity : AppCompatActivity() {
             // For now, we'll just show a Toast message to confirm it works
             // In the future, this will save the data to a database
             if (title.isNotEmpty() && location.isNotEmpty()) {
-                val message = "Posting: '$title' last seen at '$location'"
+                val message = "Posting: '$title' found at '$location'"
                 Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 
                 // TODO: Add code to save the item (including the image URI) to a database

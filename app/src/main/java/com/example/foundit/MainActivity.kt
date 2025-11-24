@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         // --- Step 1: Find the buttons from our layout ---
         val lostButton = findViewById<Button>(R.id.lost_button)
         val foundButton = findViewById<Button>(R.id.found_button)
+        val dashboardButton = findViewById<Button>(R.id.dashboard_button)
 
         // --- Step 2: Set click listeners for each button ---
 
@@ -32,10 +33,13 @@ class MainActivity : AppCompatActivity() {
 
         foundButton.setOnClickListener {
             // This code runs when the "I Found Something" button is clicked
-            Toast.makeText(this, "The 'I Found Something' button was clicked!", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, PostFoundItemActivity::class.java)
+            startActivity(intent)
+        }
 
-            // In the future, this will navigate to a new screen
-            // to create a "found item" post.
+        dashboardButton.setOnClickListener {
+            val intent = Intent(this, DashboardActivity::class.java)
+            startActivity(intent)
         }
 
 

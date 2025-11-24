@@ -23,14 +23,26 @@
             </intent-filter>
         </activity>
 
-        <!-- ▼▼▼ THIS IS THE NEW PART ▼▼▼ -->
         <!-- This declares our new "Post a Lost Item" screen -->
         <activity
             android:name=".PostLostItemActivity"
             android:exported="false">
             <!-- android:exported="false" means only our app can open this screen -->
         </activity>
-        <!-- ▲▲▲ END OF NEW PART ▲▲▲ -->
+        
+        <!-- This declares our new "Post a Found Item" screen -->
+        <activity
+            android:name=".PostFoundItemActivity"
+            android:exported="false">
+            <!-- android:exported="false" means only our app can open this screen -->
+        </activity>
+        
+        <!-- This declares our new "Dashboard" screen -->
+        <activity
+            android:name=".DashboardActivity"
+            android:exported="false">
+            <!-- android:exported="false" means only our app can open this screen -->
+        </activity>
 
     </application>
 
