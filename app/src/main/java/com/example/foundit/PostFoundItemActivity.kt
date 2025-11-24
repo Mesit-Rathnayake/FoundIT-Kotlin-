@@ -9,11 +9,15 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import com.example.foundit.models.Item
+import java.util.Date
 
 class PostFoundItemActivity : AppCompatActivity() {
 
     private lateinit var itemImageView: ImageView
     private var selectedImageUri: Uri? = null
+    private lateinit var itemViewModel: ItemViewModel
 
     // ActivityResultLauncher for picking an image
     private val pickImageLauncher: ActivityResultLauncher<String> =
@@ -28,6 +32,8 @@ class PostFoundItemActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         // This links the activity to its layout file
         setContentView(R.layout.activity_post_found_item)
+
+        itemViewModel = ViewModelProvider(this).get(ItemViewModel::class.java)
 
         // Get references to the views from the layout
         val itemTitleEditText = findViewById<EditText>(R.id.edit_text_item_title)
@@ -50,15 +56,17 @@ class PostFoundItemActivity : AppCompatActivity() {
             val description = itemDescriptionEditText.text.toString()
             val location = itemLocationEditText.text.toString()
 
-            // For now, we'll just show a Toast message to confirm it works
-            // In the future, this will save the data to a database
             if (title.isNotEmpty() && location.isNotEmpty()) {
-                val message = "Posting: '$title' found at '$location'"
-                Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-
-                // TODO: Add code to save the item (including the image URI) to a database
-
-                // Close this screen and go back to the main screen
+                val newItem = Item(
+                    title = title,
+                    description = description,
+                    location = location,
+                    type = "found",
+                    date = Date(),
+                    imageUrl = selectedImageUri.toString()
+                )
+                itemViewModel.insert(newItem)
+                Toast.makeText(this, "Found item posted!", Toast.LENGTH_SHORT).show()
                 finish()
             } else {
                 // Show an error if the title or location is empty
