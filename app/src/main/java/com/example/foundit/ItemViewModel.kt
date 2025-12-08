@@ -23,4 +23,8 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
     fun insert(item: Item) = viewModelScope.launch {
         repository.insert(item)
     }
+
+    fun update(item: Item) = viewModelScope.launch {
+        repository.update(item)
+    }
 }

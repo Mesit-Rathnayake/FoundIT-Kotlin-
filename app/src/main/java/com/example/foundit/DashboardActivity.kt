@@ -19,7 +19,16 @@ class DashboardActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recycler_view_items)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        itemAdapter = ItemAdapter(emptyList())
+        itemAdapter = ItemAdapter(emptyList(),
+            { item -> // onFoundItClickListener
+                item.status = "found"
+                itemViewModel.update(item)
+            },
+            { item -> // onItsMineClickListener
+                item.status = "claimed"
+                itemViewModel.update(item)
+            }
+        )
         recyclerView.adapter = itemAdapter
 
         itemViewModel = ViewModelProvider(this).get(ItemViewModel::class.java)
