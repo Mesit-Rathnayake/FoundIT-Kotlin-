@@ -1,7 +1,6 @@
 package com.example.foundit
 
 import android.os.Bundle
-import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,10 +15,6 @@ class DashboardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
-
-        findViewById<ImageButton>(R.id.back_button).setOnClickListener {
-            finish()
-        }
 
         recyclerView = findViewById(R.id.recycler_view_items)
         recyclerView.layoutManager = LinearLayoutManager(this)
