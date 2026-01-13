@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
 
         // Create a new item object
         val newItem = Item(
-            itemId = "item123",
+            documentId = "item123",
             title = "Found: Blue Water Bottle",
             description = "Found a blue water bottle near the library.",
             category = "accessories",

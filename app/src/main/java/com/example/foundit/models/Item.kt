@@ -8,13 +8,16 @@ import java.util.Date
 data class Item(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val itemId: String = "",
+    var documentId: String = "",
     var title: String = "",
     var description: String = "",
     var category: String = "",
     var type: String = "",
     var location: String = "",
-    val date: Date? = null,
+    var date: Date? = null,
     var imageUrl: String? = null,
     var status: String = "active"
-)
+) {
+    // Required empty constructor for Firestore
+    constructor() : this(0, "", "", "", "", "", "", null, null, "active")
+}
