@@ -27,6 +27,8 @@ androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecy
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage" }
+firebase-auth = { module = "com.google.firebase:firebase-auth-ktx" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

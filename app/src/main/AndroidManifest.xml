@@ -12,8 +12,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoundIT"
         tools:targetApi="31">
-
-        <!-- This is your main screen (already existed) -->
+        
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        
+        <activity
+            android:name=".DashboardActivity"
+            android:exported="false" />
+        
+        <activity
+            android:name=".PostLostItemActivity"
+            android:exported="false" />
+        
+        <activity
+            android:name=".PostFoundItemActivity"
+            android:exported="false" />
+        
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -22,28 +41,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- This declares our new "Post a Lost Item" screen -->
-        <activity
-            android:name=".PostLostItemActivity"
-            android:exported="false">
-            <!-- android:exported="false" means only our app can open this screen -->
-        </activity>
-        
-        <!-- This declares our new "Post a Found Item" screen -->
-        <activity
-            android:name=".PostFoundItemActivity"
-            android:exported="false">
-            <!-- android:exported="false" means only our app can open this screen -->
-        </activity>
-        
-        <!-- This declares our new "Dashboard" screen -->
-        <activity
-            android:name=".DashboardActivity"
-            android:exported="false">
-            <!-- android:exported="false" means only our app can open this screen -->
-        </activity>
-
     </application>
 
 </manifest>

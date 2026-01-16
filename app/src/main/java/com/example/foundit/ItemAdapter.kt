@@ -9,12 +9,15 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foundit.models.Item
+import java.util.Locale
 
 class ItemAdapter(
-    private var items: List<Item>,
+    private var allItems: List<Item>,
     private val onFoundItClickListener: (Item) -> Unit,
     private val onItsMineClickListener: (Item) -> Unit
 ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
+
+    private var filteredItems: List<Item> = allItems
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
@@ -22,14 +25,29 @@ class ItemAdapter(
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val item = items[position]
+        val item = filteredItems[position]
         holder.bind(item, onFoundItClickListener, onItsMineClickListener)
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int = filteredItems.size
 
     fun setItems(newItems: List<Item>) {
-        items = newItems
+        allItems = newItems
+        filteredItems = newItems
+        notifyDataSetChanged()
+    }
+
+    fun filter(query: String) {
+        filteredItems = if (query.isEmpty()) {
+            allItems
+        } else {
+            val lowerCaseQuery = query.lowercase(Locale.getDefault())
+            allItems.filter { item ->
+                item.title.lowercase(Locale.getDefault()).contains(lowerCaseQuery) ||
+                        item.description.lowercase(Locale.getDefault()).contains(lowerCaseQuery) ||
+                        item.location.lowercase(Locale.getDefault()).contains(lowerCaseQuery)
+            }
+        }
         notifyDataSetChanged()
     }
 
