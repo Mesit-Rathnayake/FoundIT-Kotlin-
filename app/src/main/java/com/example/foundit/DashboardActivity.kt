@@ -1,6 +1,7 @@
 package com.example.foundit
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +17,7 @@ class DashboardActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("DashboardActivity", "onCreate started") // ADDED THIS LINE
         setContentView(R.layout.activity_dashboard)
 
         searchView = findViewById(R.id.search_view)
@@ -36,10 +38,12 @@ class DashboardActivity : AppCompatActivity() {
 
         itemViewModel = ViewModelProvider(this).get(ItemViewModel::class.java)
         itemViewModel.allItems.observe(this) { items ->
+            Log.d("DashboardActivity", "Received items update. Count: ${items.size}")
             itemAdapter.setItems(items)
         }
 
-        setupSearch()
+        // Temporarily comment out search setup to rule out interference
+        // setupSearch()
     }
 
     private fun setupSearch() {

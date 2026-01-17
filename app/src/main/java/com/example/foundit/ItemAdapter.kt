@@ -1,5 +1,6 @@
 package com.example.foundit
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,7 @@ class ItemAdapter(
     override fun getItemCount(): Int = filteredItems.size
 
     fun setItems(newItems: List<Item>) {
+        Log.d("ItemAdapter", "setItems called. New item count: ${newItems.size}")
         allItems = newItems
         filteredItems = newItems
         notifyDataSetChanged()

@@ -1,38 +1,61 @@
 package com.example.foundit
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.Toast
-import com.example.foundit.models.Item
-import com.example.foundit.models.User
-import java.util.Date
-import android.content.Intent // Make sure this import is here
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
-    private var currentUser: User? = null
+    private lateinit var auth: FirebaseAuth
+    private lateinit var itemViewModel: ItemViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        auth = FirebaseAuth.getInstance()
+        itemViewModel = ViewModelProvider(this).get(ItemViewModel::class.java)
+
+        // --- ADDED LOG FOR DEBUGGING --- START
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            Log.d("MainActivity", "Current user UID: ${currentUser.uid}")
+        } else {
+            Log.d("MainActivity", "No user is logged in.")
+        }
+        // --- ADDED LOG FOR DEBUGGING --- END
+
+        // --- Check if user is logged in ---
+        if (currentUser == null) {
+            // Not logged in, redirect to LoginActivity
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+            return // Stop further execution of onCreate
+        }
+
+        // --- Start Observing Items ---
+        itemViewModel.startObservingItems()
+
+
         // --- Step 1: Find the buttons from our layout ---
         val lostButton = findViewById<Button>(R.id.lost_button)
         val foundButton = findViewById<Button>(R.id.found_button)
         val dashboardButton = findViewById<Button>(R.id.dashboard_button)
+        val logoutButton = findViewById<Button>(R.id.logout_button)
+
 
         // --- Step 2: Set click listeners for each button ---
 
         lostButton.setOnClickListener {
-            // This is the updated part: It now opens the new screen.
             val intent = Intent(this, PostLostItemActivity::class.java)
             startActivity(intent)
         }
 
         foundButton.setOnClickListener {
-            // This code runs when the "I Found Something" button is clicked
             val intent = Intent(this, PostFoundItemActivity::class.java)
             startActivity(intent)
         }
@@ -42,62 +65,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
-        // We are moving the test logic out of onCreate so it doesn't run automatically.
-        // You can call these test functions from a button click if you want.
-        // testPostingAnItem()
-    }
-
-    /**
-     * A test function to simulate a user posting an item.
-     * You can call this from a button listener to test it.
-     */
-    private fun testPostingAnItem() {
-        // Log in a sample user
-        currentUser = User(
-            userId = "EG-2022-5435",
-            name = "S.T. Yapa",
-            email = "yapa@example.com",
-            phone = "123456789",
-            role = "student"
-        )
-
-        // Create a new item object
-        val newItem = Item(
-            documentId = "item123",
-            title = "Found: Blue Water Bottle",
-            description = "Found a blue water bottle near the library.",
-            category = "accessories",
-            type = "found",
-            location = "Library Entrance",
-            date = Date()
-        )
-
-        // Call the postItem function
-        postItem(newItem)
-    }
-
-    /**
-     * This is the 'postItem()' function from your class diagram.
-     */
-    private fun postItem(itemToPost: Item) {
-        if (currentUser != null) {
-            Log.d("MainActivity", "User ${currentUser!!.name} is posting item: ${itemToPost.title}")
-            // In the future, you will add code here to save to a database.
-        } else {
-            Log.e("MainActivity", "Cannot post item. No user is logged in.")
-        }
-    }
-
-    /**
-     * This is the 'claimItem()' function from your class diagram.
-     */
-    private fun claimItem(itemToClaim: Item) {
-        if (currentUser != null) {
-            Log.d("MainActivity", "User ${currentUser!!.name} is claiming item: ${itemToClaim.title}")
-            // In the future, you will add code here to save a claim to a database.
-        } else {
-            Log.e("MainActivity", "Cannot claim item. No user is logged in.")
+        logoutButton.setOnClickListener {
+            itemViewModel.stopObservingItems()
+            auth.signOut()
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         }
     }
 }

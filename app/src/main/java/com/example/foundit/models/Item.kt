@@ -16,8 +16,9 @@ data class Item(
     var location: String = "",
     var date: Date? = null,
     var imageUrl: String? = null,
-    var status: String = "active"
+    var status: String = "active",
+    var userId: String? = null
 ) {
     // Required empty constructor for Firestore
-    constructor() : this(0, "", "", "", "", "", "", null, null, "active")
+    constructor() : this(0, "", "", "", "", "", "", null, null, "active", null)
 }
