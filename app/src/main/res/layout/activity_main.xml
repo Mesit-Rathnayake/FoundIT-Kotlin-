@@ -4,52 +4,115 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#050708"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/lost_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        android:text="I Lost Something"
-        app:layout_constraintBottom_toTopOf="@+id/found_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/found_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:text="I Found Something"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/dashboard_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:text="View All Items"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/found_button" />
-
-    <Button
-        android:id="@+id/logout_button"
+    <TextView
+        android:id="@+id/app_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="Logout"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="60dp"
+        android:fontFamily="sans-serif-black"
+        android:text="FoundIT"
+        android:textColor="#00E5FF"
+        android:textSize="36sp"
+        android:letterSpacing="-0.03"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/sub_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Secure Item Management"
+        android:textColor="#455A64"
+        android:textSize="14sp"
+        android:textAllCaps="true"
+        android:letterSpacing="0.1"
+        app:layout_constraintStart_toStartOf="@+id/app_title"
+        app:layout_constraintTop_toBottomOf="@+id/app_title" />
+
+    <LinearLayout
+        android:id="@+id/main_actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_nav_area"
+        app:layout_constraintTop_toBottomOf="@+id/sub_header">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/lost_button"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="#0D1113"
+            android:text="I Lost Something"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:cornerRadius="32dp"
+            app:strokeColor="#1AFFFFFF"
+            app:strokeWidth="1dp"
+            app:icon="@android:drawable/ic_menu_search"
+            app:iconTint="#00E5FF"
+            app:iconGravity="textStart"
+            app:iconPadding="16dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/found_button"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:backgroundTint="#00E5FF"
+            android:text="I Found Something"
+            android:textAllCaps="false"
+            android:textColor="#050708"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:cornerRadius="32dp"
+            app:icon="@android:drawable/ic_input_add"
+            app:iconTint="#050708"
+            app:iconGravity="textStart"
+            app:iconPadding="16dp"
+            app:elevation="4dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottom_nav_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="32dp"
+        android:paddingHorizontal="32dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/dashboard_button"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="#1A2124"
+            android:text="View All Items"
+            android:textColor="#00E5FF"
+            app:cornerRadius="20dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/logout_button"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:backgroundTint="#FF3B30"
+            android:text="Log Out"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            app:cornerRadius="20dp"
+            app:elevation="2dp"
+            app:rippleColor="#4DFFFFFF" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
