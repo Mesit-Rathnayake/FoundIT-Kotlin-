@@ -4,10 +4,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foundit.models.Item
 import java.util.Locale
@@ -46,30 +45,35 @@ class ItemAdapter(
             val lowerCaseQuery = query.lowercase(Locale.getDefault())
             allItems.filter { item ->
                 item.title.lowercase(Locale.getDefault()).contains(lowerCaseQuery) ||
-                        item.description.lowercase(Locale.getDefault()).contains(lowerCaseQuery) ||
-                        item.location.lowercase(Locale.getDefault()).contains(lowerCaseQuery)
+                        item.description.lowercase(Locale.getDefault()).contains(lowerCaseQuery)
             }
         }
         notifyDataSetChanged()
     }
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val titleTextView: TextView = itemView.findViewById(R.id.text_view_item_title)
-        private val descriptionTextView: TextView = itemView.findViewById(R.id.text_view_item_description)
-        private val locationTextView: TextView = itemView.findViewById(R.id.text_view_item_location)
-        private val foundItButton: Button = itemView.findViewById(R.id.button_found_it)
-        private val itsMineButton: Button = itemView.findViewById(R.id.button_its_mine)
+        // Corrected IDs to match item_layout.xml
+        private val titleTextView: TextView = itemView.findViewById(R.id.item_name)
+        private val descriptionTextView: TextView = itemView.findViewById(R.id.item_description)
+        private val itemImageView: ImageView = itemView.findViewById(R.id.item_image)
+        // Note: The buttons were not in the previous item_layout.xml. You might need to add them.
+        // If you add them, you can uncomment these lines.
+        // private val foundItButton: Button = itemView.findViewById(R.id.button_found_it)
+        // private val itsMineButton: Button = itemView.findViewById(R.id.button_its_mine)
+
 
         fun bind(item: Item, onFoundItClickListener: (Item) -> Unit, onItsMineClickListener: (Item) -> Unit) {
             titleTextView.text = item.title
             descriptionTextView.text = item.description
-            locationTextView.text = "Location: ${item.location}"
 
             val cardView = itemView as CardView
             val context = itemView.context
 
+            // TODO: Uncomment this block after adding buttons and color resources.
+            /*
             when (item.status) {
                 "active" -> {
+                    // Make sure you have R.color.white in your colors.xml
                     cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.white))
                     foundItButton.visibility = View.VISIBLE
                     itsMineButton.visibility = View.VISIBLE
@@ -77,6 +81,7 @@ class ItemAdapter(
                     itsMineButton.setOnClickListener { onItsMineClickListener(item) }
                 }
                 "found", "claimed" -> {
+                    // Make sure you have R.color.item_claimed_background in your colors.xml
                     cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.item_claimed_background))
                     foundItButton.visibility = View.GONE
                     itsMineButton.visibility = View.GONE
@@ -87,6 +92,7 @@ class ItemAdapter(
                     itsMineButton.visibility = View.GONE
                 }
             }
+            */
         }
     }
 }

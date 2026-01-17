@@ -5,31 +5,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#050708"
+    android:background="#0B0F14"
     tools:context=".DashboardActivity">
 
+    <!-- Title -->
     <TextView
         android:id="@+id/dashboard_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
-        android:fontFamily="sans-serif-black"
+        android:fontFamily="sans-serif-medium"
         android:text="FoundIT Items"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"
+        android:textSize="26sp"
+        android:letterSpacing="0.02"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Search Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/search_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="20dp"
-        app:cardBackgroundColor="#121619"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="0dp"
+        app:cardBackgroundColor="#161B22"
+        app:cardCornerRadius="18dp"
+        app:cardElevation="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dashboard_title">
@@ -37,7 +40,9 @@
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             app:iconifiedByDefault="false"
             app:queryHint="Search for items..."
             app:searchIcon="@android:drawable/ic_menu_search"
@@ -45,14 +50,15 @@
             app:searchHintIcon="@null" />
     </androidx.cardview.widget.CardView>
 
+    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_items"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:clipToPadding="false"
-        android:paddingHorizontal="16dp"
-        android:paddingBottom="24dp"
+        android:paddingHorizontal="20dp"
+        android:paddingBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

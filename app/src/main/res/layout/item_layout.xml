@@ -1,95 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
-    app:cardBackgroundColor="#121619"
-    app:cardCornerRadius="24dp"
-    app:cardElevation="2dp"
-    app:strokeColor="#1AFFFFFF"
-    app:strokeWidth="1dp">
+    app:cardBackgroundColor="#161B22"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:padding="16dp">
 
+        <!-- Item Image -->
+        <ImageView
+            android:id="@+id/item_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_placeholder"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <!-- Item Name -->
         <TextView
-            android:id="@+id/text_view_item_title"
+            android:id="@+id/item_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-black"
-            android:text="Black Leather Wallet"
-            android:textColor="#00E5FF"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/text_view_item_description"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="Found near the library cafeteria. Has a small keychain attached."
-            android:textColor="#B0BEC5"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_item_title" />
-
-        <TextView
-            android:id="@+id/text_view_item_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:drawablePadding="6dp"
-            android:text="Central Library"
-            android:textColor="#546E7A"
-            android:textSize="12sp"
+            android:layout_marginStart="16dp"
+            android:text="Item Name"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
             android:textStyle="bold"
-            app:drawableStartCompat="@android:drawable/ic_menu_mylocation"
-            app:drawableTint="#546E7A"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_item_description" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal"
+            app:layout_constraintStart_toEndOf="@id/item_image"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_item_location">
+            app:layout_constraintTop_toTopOf="@id/item_image" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_found_it"
-                style="@style/Widget.Material3.Button.TonalButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Found IT"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                app:backgroundTint="#1A2124"
-                app:cornerRadius="12dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_its_mine"
-                style="@style/Widget.Material3.Button.TonalButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="It's Mine!"
-                android:textAllCaps="false"
-                android:textColor="#050708"
-                android:textSize="12sp"
-                app:backgroundTint="#00E5FF"
-                app:cornerRadius="12dp" />
-        </LinearLayout>
+        <!-- Item Description -->
+        <TextView
+            android:id="@+id/item_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Item description goes here..."
+            android:textColor="#A9A9A9"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/item_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item_name"
+            app:layout_constraintBottom_toBottomOf="@id/item_image" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</com.google.android.material.card.MaterialCardView>
+</androidx.cardview.widget.CardView>
