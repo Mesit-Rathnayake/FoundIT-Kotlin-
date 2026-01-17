@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Standard Theme Colors -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -8,8 +9,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- Item Status Colors -->
-    <color name="item_lost_background">#FFEBEE</color> <!-- Light Pink -->
-    <color name="item_found_background">#E3F2FD</color> <!-- Light Blue -->
-    <color name="item_claimed_background">#E8F5E9</color> <!-- Light Green -->
+    <!-- Custom App Colors -->
+    <color name="item_active_background">#161B22</color>
+    <color name="item_claimed_background">#30363D</color>
+    <color name="cyan_light">#A7FFEB</color>
+    <color name="cyan_dark">#00796B</color>
 </resources>

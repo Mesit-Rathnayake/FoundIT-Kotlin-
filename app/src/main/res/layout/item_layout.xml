@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="8dp"
-    app:cardBackgroundColor="#161B22"
-    app:cardCornerRadius="16dp"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,44 +13,77 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <!-- Item Image -->
         <ImageView
             android:id="@+id/item_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_placeholder"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
 
-        <!-- Item Name -->
         <TextView
             android:id="@+id/item_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="Item Name"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/item_image"
+            android:textAppearance="?attr/textAppearanceHeadline6"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/item_image" />
+            app:layout_constraintStart_toEndOf="@+id/item_image"
+            app:layout_constraintTop_toTopOf="@+id/item_image" />
 
-        <!-- Item Description -->
         <TextView
             android:id="@+id/item_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Item description goes here..."
-            android:textColor="#A9A9A9"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@id/item_name"
+            android:layout_marginTop="8dp"
+            android:text="Item Description"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_name"
-            app:layout_constraintBottom_toBottomOf="@id/item_image" />
+            app:layout_constraintStart_toStartOf="@+id/item_name"
+            app:layout_constraintTop_toBottomOf="@+id/item_name" />
+
+        <!-- 1. LOCATION TEXTVIEW ADDED -->
+        <TextView
+            android:id="@+id/item_location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="Location"
+            android:textStyle="italic"
+            app:drawableStartCompat="@drawable/ic_location_on"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/item_description"
+            app:layout_constraintTop_toBottomOf="@+id/item_description" />
+
+        <!-- 2. BUTTONS HAVE NEW BACKGROUND COLORS -->
+        <Button
+            android:id="@+id/button_found_it"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/cyan_dark"
+            android:text="Found It"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toStartOf="@+id/button_its_mine"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_image" />
+
+        <Button
+            android:id="@+id/button_its_mine"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/cyan_light"
+            android:text="It's Mine"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/button_found_it"
+            app:layout_constraintTop_toTopOf="@+id/button_found_it" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
