@@ -10,20 +10,17 @@ import com.example.foundit.models.Item
 
 class ItemViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository: ItemRepository = ItemRepository // CHANGED: reference the object directly
+    private val repository: ItemRepository = ItemRepository
     val allItems: LiveData<List<Item>> = repository.allItems
-
-    init {
-        Log.d("ItemViewModel", "ItemViewModel initialized.")
-    }
+    val myItems: LiveData<List<Item>> = repository.myItems
 
     fun startObservingItems() {
-        Log.d("ItemViewModel", "startObservingItems called.")
+        Log.d("ItemViewModel", "startObservingItems called")
         repository.startObservingItems()
     }
 
     fun stopObservingItems() {
-        Log.d("ItemViewModel", "stopObservingItems called.")
+        Log.d("ItemViewModel", "stopObservingItems called")
         repository.stopObservingItems()
     }
 

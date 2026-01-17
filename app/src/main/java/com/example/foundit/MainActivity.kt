@@ -18,57 +18,56 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         auth = FirebaseAuth.getInstance()
-        itemViewModel = ViewModelProvider(this).get(ItemViewModel::class.java)
 
-        // --- ADDED LOG FOR DEBUGGING --- START
+        // ✅ Shared ViewModel using Application scope
+        itemViewModel = ViewModelProvider.AndroidViewModelFactory
+            .getInstance(application)
+            .create(ItemViewModel::class.java)
+
         val currentUser = auth.currentUser
         if (currentUser != null) {
             Log.d("MainActivity", "Current user UID: ${currentUser.uid}")
         } else {
             Log.d("MainActivity", "No user is logged in.")
-        }
-        // --- ADDED LOG FOR DEBUGGING --- END
-
-        // --- Check if user is logged in ---
-        if (currentUser == null) {
-            // Not logged in, redirect to LoginActivity
-            startActivity(Intent(this, LoginActivity::class.java))
+            // Redirect to login if not logged in
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
             finish()
-            return // Stop further execution of onCreate
+            return
         }
 
-        // --- Start Observing Items ---
         itemViewModel.startObservingItems()
 
-
-        // --- Step 1: Find the buttons from our layout ---
         val lostButton = findViewById<Button>(R.id.lost_button)
         val foundButton = findViewById<Button>(R.id.found_button)
         val dashboardButton = findViewById<Button>(R.id.dashboard_button)
+        val myItemsButton = findViewById<Button>(R.id.view_my_items_button)
         val logoutButton = findViewById<Button>(R.id.logout_button)
 
-
-        // --- Step 2: Set click listeners for each button ---
-
         lostButton.setOnClickListener {
-            val intent = Intent(this, PostLostItemActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, PostLostItemActivity::class.java))
         }
 
         foundButton.setOnClickListener {
-            val intent = Intent(this, PostFoundItemActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, PostFoundItemActivity::class.java))
         }
 
         dashboardButton.setOnClickListener {
-            val intent = Intent(this, DashboardActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, DashboardActivity::class.java))
+        }
+
+        myItemsButton.setOnClickListener {
+            startActivity(Intent(this, MyItemsActivity::class.java))
         }
 
         logoutButton.setOnClickListener {
+            // ✅ Stop shared ViewModel listener before logout
             itemViewModel.stopObservingItems()
             auth.signOut()
-            startActivity(Intent(this, LoginActivity::class.java))
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
             finish()
         }
     }

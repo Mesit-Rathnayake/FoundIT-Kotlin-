@@ -69,7 +69,8 @@ dependencies {
 // ... android { ... }
 
 dependencies {
-    // You will already have some lines here.
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)// You will already have some lines here.
     // For example:
     implementation("androidx.core:core-ktx:1.9.0") // Version might be different
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2") // Version might be different
