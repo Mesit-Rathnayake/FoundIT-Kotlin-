@@ -1,5 +1,6 @@
 package com.example.foundit
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
@@ -9,6 +10,7 @@ import androidx.core.content.ContextCompat // Import ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView // Import BottomNavigationView
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -16,6 +18,7 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var itemAdapter: ItemAdapter
     private lateinit var itemViewModel: ItemViewModel
     private lateinit var searchView: SearchView // Declare SearchView
+    private lateinit var bottomNavigationView: BottomNavigationView // Declare BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +36,9 @@ class DashboardActivity : AppCompatActivity() {
                 item.status = "claimed"
                 itemViewModel.update(item)
             },
-            { item -> /* onDeleteItemClickListener - no-op for DashboardActivity */ }
+            { item -> // onDeleteItemClickListener - now functional for DashboardActivity
+                itemViewModel.deleteItem(item)
+            }
         )
         recyclerView.adapter = itemAdapter
 
@@ -67,6 +72,29 @@ class DashboardActivity : AppCompatActivity() {
                 return true
             }
         })
+
+        // Initialize BottomNavigationView and set listener
+        bottomNavigationView = findViewById(R.id.bottom_navigation)
+        bottomNavigationView.selectedItemId = R.id.nav_dashboard // Set Dashboard as selected
+        bottomNavigationView.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.nav_home -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                    true
+                }
+                R.id.nav_dashboard -> {
+                    // Already on DashboardActivity, do nothing or refresh if needed
+                    true
+                }
+                R.id.nav_my_items -> {
+                    startActivity(Intent(this, MyItemsActivity::class.java))
+                    finish()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     override fun onDestroy() {

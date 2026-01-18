@@ -1,16 +1,19 @@
 package com.example.foundit
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView // Import BottomNavigationView
 
 class MyItemsActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var itemAdapter: ItemAdapter
     private lateinit var itemViewModel: ItemViewModel
+    private lateinit var bottomNavigationView: BottomNavigationView // Declare BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,11 +45,35 @@ class MyItemsActivity : AppCompatActivity() {
 
         // Start observing items
         itemViewModel.startObservingItems()
+
+        // Initialize BottomNavigationView and set listener
+        bottomNavigationView = findViewById(R.id.bottom_navigation)
+        bottomNavigationView.selectedItemId = R.id.nav_my_items // Set My Items as selected
+        bottomNavigationView.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.nav_home -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                    true
+                }
+                R.id.nav_dashboard -> {
+                    startActivity(Intent(this, DashboardActivity::class.java))
+                    finish()
+                    true
+                }
+                R.id.nav_my_items -> {
+                    // Already on MyItemsActivity, do nothing or refresh if needed
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        // Stop observing items when activity is destroyed
-        itemViewModel.stopObservingItems()
+        // For an Application-scoped ViewModel, the listener should ideally not be stopped by individual activities,
+        // unless the app is truly shutting down. We'll manage the listener from MainActivity for consistency.
+        // itemViewModel.stopObservingItems() // Removed to avoid conflicting with global listener management
     }
 }
