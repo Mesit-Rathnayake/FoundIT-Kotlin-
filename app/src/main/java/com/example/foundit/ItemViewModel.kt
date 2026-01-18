@@ -31,4 +31,8 @@ class ItemViewModel(application: Application) : AndroidViewModel(application) {
     fun update(item: Item) {
         repository.update(item)
     }
+
+    fun deleteItem(item: Item) {
+        repository.deleteItem(item)
+    }
 }

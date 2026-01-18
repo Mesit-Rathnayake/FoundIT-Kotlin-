@@ -19,7 +19,15 @@ class MyItemsActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recycler_view_my_items)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        itemAdapter = ItemAdapter(emptyList(), { item -> }, { item -> })
+        // Pass the onDeleteItemClickListener to the adapter
+        itemAdapter = ItemAdapter(
+            emptyList(), 
+            { item -> /* onFoundItClickListener - not used in MyItemsActivity, but required by adapter */ }, 
+            { item -> /* onItsMineClickListener - not used in MyItemsActivity, but required by adapter */ },
+            { item -> // onDeleteItemClickListener
+                itemViewModel.deleteItem(item)
+            }
+        )
         recyclerView.adapter = itemAdapter
 
         // ✅ Shared ViewModel across the app using Application scope

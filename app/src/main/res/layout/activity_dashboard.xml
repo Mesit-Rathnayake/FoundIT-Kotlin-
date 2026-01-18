@@ -47,7 +47,8 @@
             app:queryHint="Search for items..."
             app:searchIcon="@android:drawable/ic_menu_search"
             app:queryBackground="@android:color/transparent"
-            app:searchHintIcon="@null" />
+            app:searchHintIcon="@null"
+            android:textColor="#FFFFFF" />
     </androidx.cardview.widget.CardView>
 
     <!-- RecyclerView -->

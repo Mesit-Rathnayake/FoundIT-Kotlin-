@@ -29,6 +29,7 @@
             android:layout_marginStart="16dp"
             android:text="Item Name"
             android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/item_image"
             app:layout_constraintTop_toTopOf="@+id/item_image" />
@@ -39,11 +40,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Item Description"
+            android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/item_name"
             app:layout_constraintTop_toBottomOf="@+id/item_name" />
 
-        <!-- 1. LOCATION TEXTVIEW ADDED -->
         <TextView
             android:id="@+id/item_location"
             android:layout_width="0dp"
@@ -53,12 +54,12 @@
             android:gravity="center_vertical"
             android:text="Location"
             android:textStyle="italic"
+            android:textColor="@android:color/white"
             app:drawableStartCompat="@drawable/ic_location_on"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/item_description"
             app:layout_constraintTop_toBottomOf="@+id/item_description" />
 
-        <!-- 2. BUTTONS HAVE NEW BACKGROUND COLORS -->
         <Button
             android:id="@+id/button_found_it"
             style="@style/Widget.Material3.Button.OutlinedButton"
@@ -84,6 +85,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/button_found_it"
             app:layout_constraintTop_toTopOf="@+id/button_found_it" />
+
+        <Button
+            android:id="@+id/button_delete"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="@color/red_transparent"
+            android:text="Delete"
+            android:textColor="@android:color/white"
+            android:visibility="gone" 
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_its_mine" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

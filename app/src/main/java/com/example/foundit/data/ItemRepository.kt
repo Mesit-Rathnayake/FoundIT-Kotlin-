@@ -94,4 +94,38 @@ object ItemRepository {
             itemsCollection.document(item.documentId).set(item)
         }
     }
+
+    // --- Delete item from Firestore and Storage ---
+    fun deleteItem(item: Item) {
+        if (item.documentId.isNotEmpty()) {
+            itemsCollection.document(item.documentId).delete()
+                .addOnSuccessListener {
+                    Log.d("ItemRepository", "Item ${item.documentId} deleted from Firestore.")
+                    
+                    // Safely capture the imageUrl in an immutable local variable
+                    item.imageUrl?.let { imageUrlToDelete -> 
+                        if (imageUrlToDelete.isNotEmpty()) {
+                            try {
+                                // Extract path from URL to delete from Storage
+                                val imageRef = storage.getReferenceFromUrl(imageUrlToDelete) 
+                                imageRef.delete()
+                                    .addOnSuccessListener {
+                                        Log.d("ItemRepository", "Image for item ${item.documentId} deleted from Storage.")
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.e("ItemRepository", "Error deleting image for item ${item.documentId}: ${e.message}")
+                                    }
+                            } catch (e: Exception) {
+                                Log.e("ItemRepository", "Error getting storage reference from URL for item ${item.documentId}: ${e.message}")
+                            }
+                        }
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.e("ItemRepository", "Error deleting item ${item.documentId} from Firestore: ${e.message}")
+                }
+        } else {
+            Log.w("ItemRepository", "Attempted to delete item with empty documentId.")
+        }
+    }
 }

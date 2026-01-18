@@ -14,4 +14,5 @@
     <color name="item_claimed_background">#30363D</color>
     <color name="cyan_light">#A7FFEB</color>
     <color name="cyan_dark">#00796B</color>
+    <color name="red_transparent">#80FF0000</color>
 </resources>

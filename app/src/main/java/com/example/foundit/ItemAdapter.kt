@@ -11,12 +11,14 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foundit.models.Item
+import com.google.firebase.auth.FirebaseAuth // Import FirebaseAuth
 import java.util.Locale
 
 class ItemAdapter(
     private var allItems: List<Item>,
     private val onFoundItClickListener: (Item) -> Unit,
-    private val onItsMineClickListener: (Item) -> Unit
+    private val onItsMineClickListener: (Item) -> Unit,
+    private val onDeleteItemClickListener: (Item) -> Unit // New delete item listener
 ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
     private var filteredItems: List<Item> = allItems
@@ -28,7 +30,8 @@ class ItemAdapter(
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = filteredItems[position]
-        holder.bind(item, onFoundItClickListener, onItsMineClickListener)
+        // Pass all listeners to the bind function
+        holder.bind(item, onFoundItClickListener, onItsMineClickListener, onDeleteItemClickListener)
     }
 
     override fun getItemCount(): Int = filteredItems.size
@@ -54,15 +57,19 @@ class ItemAdapter(
     }
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // 1. FIXED: Separated the declarations onto their own lines
         private val titleTextView: TextView = itemView.findViewById(R.id.item_name)
         private val descriptionTextView: TextView = itemView.findViewById(R.id.item_description)
         private val locationTextView: TextView = itemView.findViewById(R.id.item_location)
         private val itemImageView: ImageView = itemView.findViewById(R.id.item_image)
         private val foundItButton: Button = itemView.findViewById(R.id.button_found_it)
         private val itsMineButton: Button = itemView.findViewById(R.id.button_its_mine)
+        private val deleteButton: Button = itemView.findViewById(R.id.button_delete) // Initialize delete button
 
-        fun bind(item: Item, onFoundItClickListener: (Item) -> Unit, onItsMineClickListener: (Item) -> Unit) {
+        fun bind(item: Item, 
+                 onFoundItClickListener: (Item) -> Unit, 
+                 onItsMineClickListener: (Item) -> Unit,
+                 onDeleteItemClickListener: (Item) -> Unit // New delete item listener parameter
+        ) {
             titleTextView.text = item.title
             descriptionTextView.text = item.description
             locationTextView.text = item.location
@@ -70,7 +77,7 @@ class ItemAdapter(
             val cardView = itemView as CardView
             val context = itemView.context
 
-            // This is the logic for showing/hiding buttons and changing colors
+            // Logic for showing/hiding Found It and Its Mine buttons based on item status
             when (item.status) {
                 "active" -> {
                     cardView.setCardBackgroundColor(ContextCompat.getColor(context, R.color.item_active_background))
@@ -89,6 +96,15 @@ class ItemAdapter(
                     foundItButton.visibility = View.GONE
                     itsMineButton.visibility = View.GONE
                 }
+            }
+
+            // Logic for showing/hiding the Delete button
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            if (currentUser != null && item.userId == currentUser.uid) {
+                deleteButton.visibility = View.VISIBLE
+                deleteButton.setOnClickListener { onDeleteItemClickListener(item) }
+            } else {
+                deleteButton.visibility = View.GONE
             }
         }
     }

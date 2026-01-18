@@ -62,24 +62,3 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
 }
-
-// This is inside app/build.gradle.kts
-
-// ... plugins { ... }
-// ... android { ... }
-
-dependencies {
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.constraintlayout)// You will already have some lines here.
-    // For example:
-    implementation("androidx.core:core-ktx:1.9.0") // Version might be different
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2") // Version might be different
-    implementation("androidx.activity:activity-compose:1.8.2") // Version might be different
-    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
-
-    // ADD THE MISSING LIBRARIES HERE
-    implementation("androidx.appcompat:appcompat:1.7.0") // Use current stable versions
-    implementation("androidx.recyclerview:recyclerview:1.3.2")
-    implementation("androidx.cardview:cardview:1.0.0")
-    implementation("com.google.android.material:material:1.11.0") // Use current stable versions
-}
