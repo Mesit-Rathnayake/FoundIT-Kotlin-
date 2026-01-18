@@ -7,6 +7,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,7 +30,6 @@ class MainActivity : AppCompatActivity() {
             Log.d("MainActivity", "Current user UID: ${currentUser.uid}")
         } else {
             Log.d("MainActivity", "No user is logged in.")
-            // Redirect to login if not logged in
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         val dashboardButton = findViewById<Button>(R.id.dashboard_button)
         val myItemsButton = findViewById<Button>(R.id.view_my_items_button)
         val logoutButton = findViewById<Button>(R.id.logout_button)
+        val chatFab = findViewById<FloatingActionButton>(R.id.chat_fab) // 🔵 Chat Button
 
         lostButton.setOnClickListener {
             startActivity(Intent(this, PostLostItemActivity::class.java))
@@ -61,8 +62,12 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, MyItemsActivity::class.java))
         }
 
+        chatFab.setOnClickListener {
+            // 🔥 Open Chat Page
+            startActivity(Intent(this, ChatActivity::class.java))
+        }
+
         logoutButton.setOnClickListener {
-            // ✅ Stop shared ViewModel listener before logout
             itemViewModel.stopObservingItems()
             auth.signOut()
             val intent = Intent(this, LoginActivity::class.java)
