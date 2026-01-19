@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FoundIT</string>
+    <string name="chat_title">Chat</string>
+    <string name="chat_coming_soon">Chat screen coming soon 💬</string>
+    <string name="chat_hint">Type a message</string>
+    <string name="send_message">Send message</string>
 </resources>

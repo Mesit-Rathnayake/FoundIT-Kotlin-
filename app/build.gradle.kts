@@ -40,6 +40,7 @@ android {
 dependencies {
 
     implementation(libs.androidx.core.ktx)
+    implementation("com.google.firebase:firebase-database-ktx")
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)

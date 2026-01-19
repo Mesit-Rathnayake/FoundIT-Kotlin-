@@ -6,26 +6,78 @@
     android:layout_height="match_parent"
     android:background="#050708">
 
+    <!-- Chat Title -->
     <TextView
         android:id="@+id/chat_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Chat Support"
+        android:text="Chat"
         android:textColor="#00E5FF"
         android:textSize="22sp"
         android:textStyle="bold"
+        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="24dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"/>
 
+    <!-- Placeholder text if no messages -->
     <TextView
+        android:id="@+id/chat_placeholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Chat screen coming soon 💬"
-        android:textColor="#FFFFFF"
+        android:text="@string/chat_coming_soon"
+        android:textColor="#78909C"
         android:textSize="16sp"
+        android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/chat_title"
-        app:layout_constraintStart_toStartOf="@id/chat_title"
-        android:layout_marginTop="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"/>
+
+    <!-- RecyclerView for messages -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chat_recycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="8dp"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@id/chat_title"
+        app:layout_constraintBottom_toTopOf="@id/chat_input"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Message input -->
+    <EditText
+        android:id="@+id/chat_input"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/chat_hint"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#78909C"
+        android:background="@drawable/chat_input_bg"
+        android:padding="12dp"
+        android:inputType="text"
+        android:autofillHints="none"
+        android:imeOptions="actionSend"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/chat_send_button"/>
+
+    <!-- Send button -->
+    <ImageButton
+        android:id="@+id/chat_send_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#00E5FF"
+        android:src="@android:drawable/ic_menu_send"
+        app:tint="#050708"
+        android:contentDescription="@string/send_message"
+        app:layout_constraintBottom_toBottomOf="@id/chat_input"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

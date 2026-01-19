@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        // ✅ Shared ViewModel using Application scope
         itemViewModel = ViewModelProvider.AndroidViewModelFactory
             .getInstance(application)
             .create(ItemViewModel::class.java)
@@ -44,7 +43,8 @@ class MainActivity : AppCompatActivity() {
         val dashboardButton = findViewById<Button>(R.id.dashboard_button)
         val myItemsButton = findViewById<Button>(R.id.view_my_items_button)
         val logoutButton = findViewById<Button>(R.id.logout_button)
-        val chatFab = findViewById<FloatingActionButton>(R.id.chat_fab) // 🔵 Chat Button
+
+        val chatFab = findViewById<FloatingActionButton>(R.id.chat_fab)
 
         lostButton.setOnClickListener {
             startActivity(Intent(this, PostLostItemActivity::class.java))
@@ -63,7 +63,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         chatFab.setOnClickListener {
-            // 🔥 Open Chat Page
             startActivity(Intent(this, ChatActivity::class.java))
         }
 
