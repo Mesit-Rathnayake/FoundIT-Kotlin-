@@ -92,16 +92,22 @@ class ItemAdapter(
                     // 🔵 Chat navigation happens here
                     foundItButton.setOnClickListener {
                         val intent = Intent(context, ChatActivity::class.java)
+                        intent.putExtra("ITEM_ID", item.documentId) // CHANGED: Use item.documentId
+                        intent.putExtra("RECEIVER_ID", item.userId)
                         intent.putExtra("ITEM_NAME", item.title)
                         intent.putExtra("ACTION_TYPE", "Found It")
+                        Log.d("ItemAdapter", "Attempting to start ChatActivity (Found It) for item documentId: ${item.documentId}")
                         context.startActivity(intent)
                         onFoundItClickListener(item)
                     }
 
                     itsMineButton.setOnClickListener {
                         val intent = Intent(context, ChatActivity::class.java)
+                        intent.putExtra("ITEM_ID", item.documentId) // CHANGED: Use item.documentId
+                        intent.putExtra("RECEIVER_ID", item.userId)
                         intent.putExtra("ITEM_NAME", item.title)
                         intent.putExtra("ACTION_TYPE", "It's Mine")
+                        Log.d("ItemAdapter", "Attempting to start ChatActivity (It's Mine) for item documentId: ${item.documentId}")
                         context.startActivity(intent)
                         onItsMineClickListener(item)
                     }

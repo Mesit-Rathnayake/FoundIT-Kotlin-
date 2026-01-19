@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     android:background="#050708">
 
-    <!-- Chat Title -->
+    <!-- Chat Title (will be set programmatically) -->
     <TextView
         android:id="@+id/chat_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Chat"
+        android:text="" 
         android:textColor="#00E5FF"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -21,19 +21,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"/>
 
-    <!-- Placeholder text if no messages -->
-    <TextView
-        android:id="@+id/chat_placeholder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/chat_coming_soon"
-        android:textColor="#78909C"
-        android:textSize="16sp"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/chat_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="24dp"/>
+    <!-- Removed Placeholder text -->
 
     <!-- RecyclerView for messages -->
     <androidx.recyclerview.widget.RecyclerView

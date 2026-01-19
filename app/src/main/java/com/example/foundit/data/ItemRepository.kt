@@ -78,7 +78,8 @@ object ItemRepository {
                     }
                 }
                 .addOnFailureListener {
-                    saveToFirestore(item)
+                    Log.e("ItemRepository", "Failed to upload image. Saving item without image.", it)
+                    saveToFirestore(item) // Still attempt to save the item even if image upload fails
                 }
         } else {
             saveToFirestore(item)
@@ -86,12 +87,31 @@ object ItemRepository {
     }
 
     private fun saveToFirestore(item: Item) {
+        // Use add() to let Firestore generate an ID, then update the item with that ID
         itemsCollection.add(item)
+            .addOnSuccessListener { documentReference ->
+                val newDocumentId = documentReference.id
+                item.documentId = newDocumentId // Update the Item object with the Firestore ID
+                // Now, update the document in Firestore to include this ID within the document itself
+                // This ensures consistency when retrieving the Item object later
+                itemsCollection.document(newDocumentId).set(item)
+                    .addOnSuccessListener {
+                        Log.d("ItemRepository", "Item saved and documentId updated to: $newDocumentId")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("ItemRepository", "Error updating item documentId for $newDocumentId: ${e.message}")
+                    }
+            }
+            .addOnFailureListener { e ->
+                Log.e("ItemRepository", "Error adding item to Firestore: ${e.message}")
+            }
     }
 
     fun update(item: Item) {
         if (item.documentId.isNotEmpty()) {
             itemsCollection.document(item.documentId).set(item)
+        } else {
+            Log.w("ItemRepository", "Attempted to update item with empty documentId. Item not updated.")
         }
     }
 
@@ -102,11 +122,9 @@ object ItemRepository {
                 .addOnSuccessListener {
                     Log.d("ItemRepository", "Item ${item.documentId} deleted from Firestore.")
                     
-                    // Safely capture the imageUrl in an immutable local variable
                     item.imageUrl?.let { imageUrlToDelete -> 
                         if (imageUrlToDelete.isNotEmpty()) {
                             try {
-                                // Extract path from URL to delete from Storage
                                 val imageRef = storage.getReferenceFromUrl(imageUrlToDelete) 
                                 imageRef.delete()
                                     .addOnSuccessListener {

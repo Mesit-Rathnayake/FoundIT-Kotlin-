@@ -1,6 +1,7 @@
 package com.example.foundit
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
@@ -19,12 +20,24 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var chatRef: DatabaseReference
     private val messagesList = mutableListOf<Message>()
 
+    private var currentUserId: String? = null
+    private var receiverId: String? = null
+    private var itemId: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
-        // Get item name from intent
+        Log.d("ChatActivity", "onCreate started.")
+
+        currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+        receiverId = intent.getStringExtra("RECEIVER_ID")
+        itemId = intent.getStringExtra("ITEM_ID")
         val itemName = intent.getStringExtra("ITEM_NAME") ?: "Unknown"
+
+        Log.d("ChatActivity", "currentUserId: $currentUserId")
+        Log.d("ChatActivity", "receiverId: $receiverId")
+        Log.d("ChatActivity", "itemId: $itemId")
 
         // Set chat title
         val chatTitle = findViewById<TextView>(R.id.chat_title)
@@ -36,13 +49,29 @@ class ChatActivity : AppCompatActivity() {
         sendButton = findViewById(R.id.chat_send_button)
 
         // Setup RecyclerView
-        chatAdapter = ChatAdapter(messagesList)
+        chatAdapter = ChatAdapter(messagesList, currentUserId)
         chatRecycler.adapter = chatAdapter
         chatRecycler.layoutManager = LinearLayoutManager(this)
 
-        // Firebase reference for this item
-        val database = FirebaseDatabase.getInstance()
-        chatRef = database.getReference("chats").child(itemName)
+        // Validate necessary IDs
+        if (currentUserId == null || receiverId == null || itemId == null) {
+            Log.e("ChatActivity", "Missing currentUserId, receiverId, or itemId. Finishing activity.")
+            finish()
+            return
+        }
+
+        // Create a unique chat room ID for this specific conversation about this item
+        val chatRoomId = if (currentUserId!! < receiverId!!) {
+            "${currentUserId}_${receiverId}_${itemId}"
+        } else {
+            "${receiverId}_${currentUserId}_${itemId}"
+        }
+
+        Log.d("ChatActivity", "ChatRoomId generated: $chatRoomId")
+
+        // *** FIX: Specify the correct Firebase Realtime Database URL ***
+        val database = FirebaseDatabase.getInstance("https://foundit-308f8-default-rtdb.asia-southeast1.firebasedatabase.app")
+        chatRef = database.getReference("chats").child(chatRoomId)
 
         // Listen for messages in real-time
         chatRef.addValueEventListener(object : ValueEventListener {
@@ -56,7 +85,9 @@ class ChatActivity : AppCompatActivity() {
                 chatRecycler.scrollToPosition(messagesList.size - 1)
             }
 
-            override fun onCancelled(error: DatabaseError) {}
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("ChatActivity", "Failed to read messages: ${error.message}")
+            }
         })
 
         // Send button click listener
@@ -67,19 +98,27 @@ class ChatActivity : AppCompatActivity() {
                 messageInput.text.clear()
             }
         }
+        Log.d("ChatActivity", "onCreate finished successfully.")
+
     }
 
     // Function to send a message to Firebase
     private fun sendMessage(text: String) {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: "anonymous"
-        val message = Message(text, userId, System.currentTimeMillis())
+        if (currentUserId == null || receiverId == null || itemId == null) {
+            Log.e("ChatActivity", "Cannot send message: Missing user, receiver, or item ID.")
+            return
+        }
+        val message = Message(text, currentUserId!!, receiverId!!, itemId!!, System.currentTimeMillis())
         chatRef.push().setValue(message)
+            .addOnSuccessListener { Log.d("ChatActivity", "Message sent successfully!") }
+            .addOnFailureListener { e -> Log.e("ChatActivity", "Failed to send message: ${e.message}", e) }
     }
 }
 
-// Data class for a chat message
 data class Message(
     val text: String = "",
     val senderId: String = "",
+    val receiverId: String = "",
+    val itemId: String = "",
     val timestamp: Long = 0
 )

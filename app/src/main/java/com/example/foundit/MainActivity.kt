@@ -63,7 +63,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         chatFab.setOnClickListener {
-            startActivity(Intent(this, ChatActivity::class.java))
+            // Changed to launch ChatListActivity
+            startActivity(Intent(this, ChatListActivity::class.java))
         }
 
         logoutButton.setOnClickListener {
