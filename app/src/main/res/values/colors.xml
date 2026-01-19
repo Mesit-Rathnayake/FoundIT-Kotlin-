@@ -15,4 +15,8 @@
     <color name="cyan_light">#A7FFEB</color>
     <color name="cyan_dark">#00796B</color>
     <color name="red_transparent">#80FF0000</color>
+
+    <!-- Item Type Labels -->
+    <color name="item_type_lost_background">#FF5252</color> <!-- Red for lost -->
+    <color name="item_type_found_background">#4CAF50</color> <!-- Green for found -->
 </resources>

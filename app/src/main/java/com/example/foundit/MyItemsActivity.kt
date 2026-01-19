@@ -22,13 +22,17 @@ class MyItemsActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recycler_view_my_items)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Pass the onDeleteItemClickListener to the adapter
+        // Pass the onDeleteItemClickListener and new onMarkAsClaimedClickListener to the adapter
         itemAdapter = ItemAdapter(
             emptyList(), 
-            { item -> /* onFoundItClickListener - not used in MyItemsActivity, but required by adapter */ }, 
-            { item -> /* onItsMineClickListener - not used in MyItemsActivity, but required by adapter */ },
-            { item -> // onDeleteItemClickListener
+            onFoundItClickListener = { item -> /* onFoundItClickListener - not used in MyItemsActivity, but required by adapter */ }, 
+            onItsMineClickListener = { item -> /* onItsMineClickListener - not used in MyItemsActivity, but required by adapter */ },
+            onDeleteItemClickListener = { item -> // onDeleteItemClickListener
                 itemViewModel.deleteItem(item)
+            },
+            onMarkAsClaimedClickListener = { item -> // NEW: Handles marking item as claimed
+                item.status = "claimed"
+                itemViewModel.update(item)
             }
         )
         recyclerView.adapter = itemAdapter

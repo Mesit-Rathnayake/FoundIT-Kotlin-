@@ -27,25 +27,32 @@ class DashboardActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recycler_view_items)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        itemAdapter = ItemAdapter(emptyList(),
-            { item -> // onFoundItClickListener
-                item.status = "found"
-                itemViewModel.update(item)
+        // Initialize ItemViewModel before ItemAdapter
+        itemViewModel = ViewModelProvider.AndroidViewModelFactory
+            .getInstance(application)
+            .create(ItemViewModel::class.java)
+
+        itemAdapter = ItemAdapter(
+            emptyList(),
+            onFoundItClickListener = { item -> // Found It now only initiates chat; status change is separate
+                // You might want to log something here or keep it empty if no specific action needed in DashboardActivity
+                // For example:
+                // Log.d("DashboardActivity", "Found It clicked for item: ${item.title}")
             },
-            { item -> // onItsMineClickListener
+            onItsMineClickListener = { item -> // It's Mine now only initiates chat; status change is separate
+                // Similar to onFoundItClickListener, keep it empty or log
+                // Log.d("DashboardActivity", "It's Mine clicked for item: ${item.title}")
+            },
+            onDeleteItemClickListener = { item -> // Delete remains the same
+                itemViewModel.deleteItem(item)
+            },
+            onMarkAsClaimedClickListener = { item -> // NEW: This handles the status change to 'claimed'
                 item.status = "claimed"
                 itemViewModel.update(item)
-            },
-            { item -> // onDeleteItemClickListener - now functional for DashboardActivity
-                itemViewModel.deleteItem(item)
             }
         )
         recyclerView.adapter = itemAdapter
 
-        // Use Application-scoped ViewModel for consistent listener management
-        itemViewModel = ViewModelProvider.AndroidViewModelFactory
-            .getInstance(application)
-            .create(ItemViewModel::class.java)
         itemViewModel.allItems.observe(this) {
             items -> itemAdapter.setItems(items)
         }
