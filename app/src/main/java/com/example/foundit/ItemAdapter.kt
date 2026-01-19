@@ -69,14 +69,15 @@ class ItemAdapter(
         private val itsMineButton: Button = itemView.findViewById(R.id.button_its_mine)
         private val deleteButton: Button = itemView.findViewById(R.id.button_delete)
         private val itemTypeLabel: TextView = itemView.findViewById(R.id.item_type_label)
-        private val markAsClaimedButton: Button = itemView.findViewById(R.id.button_mark_as_claimed) // Initialize here
+        private val markAsClaimedButton: Button = itemView.findViewById(R.id.button_mark_as_claimed)
+        private val itemClaimedLabel: TextView = itemView.findViewById(R.id.item_claimed_label)
 
         fun bind(
             item: Item,
             onFoundItClickListener: (Item) -> Unit,
             onItsMineClickListener: (Item) -> Unit,
             onDeleteItemClickListener: (Item) -> Unit,
-            onMarkAsClaimedClickListener: (Item) -> Unit // NEW: Callback for marking as claimed
+            onMarkAsClaimedClickListener: (Item) -> Unit
         ) {
             titleTextView.text = item.title
             descriptionTextView.text = item.description
@@ -85,45 +86,40 @@ class ItemAdapter(
             val cardView = itemView as CardView
             val context = itemView.context
 
-            // Set Item Type Label
-            when (item.type?.lowercase(Locale.getDefault())) {
-                "lost" -> {
-                    itemTypeLabel.text = "LOST"
-                    itemTypeLabel.setBackgroundColor(ContextCompat.getColor(context, R.color.item_type_lost_background))
-                    itemTypeLabel.visibility = View.VISIBLE
-                }
-                "found" -> {
-                    itemTypeLabel.text = "FOUND"
-                    itemTypeLabel.setBackgroundColor(ContextCompat.getColor(context, R.color.item_type_found_background))
-                    itemTypeLabel.visibility = View.VISIBLE
-                }
-                else -> {
-                    itemTypeLabel.visibility = View.GONE
-                }
-            }
-
-            // 🎯 Status-based UI
             val currentUser = FirebaseAuth.getInstance().currentUser
             val isOwner = currentUser != null && item.userId == currentUser.uid
 
+            // --- Explicitly manage visibility for ALL buttons and labels based on status ---
             when (item.status) {
                 "active" -> {
                     cardView.setCardBackgroundColor(
                         ContextCompat.getColor(context, R.color.item_active_background)
                     )
-                    // Found It and It's Mine buttons are now always visible for active items
+
+                    // Buttons for active items
                     foundItButton.visibility = View.VISIBLE
                     itsMineButton.visibility = View.VISIBLE
+                    markAsClaimedButton.visibility = if (isOwner) View.VISIBLE else View.GONE
 
-                    // Mark as Claimed button logic - only owner can mark as claimed and only if active
-                    if (isOwner) {
-                        markAsClaimedButton.visibility = View.VISIBLE
-                        markAsClaimedButton.setOnClickListener { onMarkAsClaimedClickListener(item) }
-                    } else {
-                        markAsClaimedButton.visibility = View.GONE
+                    // Labels for active items
+                    itemClaimedLabel.visibility = View.GONE // Ensure claimed label is hidden
+                    when (item.type?.lowercase(Locale.getDefault())) {
+                        "lost" -> {
+                            itemTypeLabel.text = "LOST"
+                            itemTypeLabel.setBackgroundColor(ContextCompat.getColor(context, R.color.item_type_lost_background))
+                            itemTypeLabel.visibility = View.VISIBLE
+                        }
+                        "found" -> {
+                            itemTypeLabel.text = "FOUND"
+                            itemTypeLabel.setBackgroundColor(ContextCompat.getColor(context, R.color.item_type_found_background))
+                            itemTypeLabel.visibility = View.VISIBLE
+                        }
+                        else -> {
+                            itemTypeLabel.visibility = View.GONE
+                        }
                     }
 
-                    // 🔵 Chat navigation happens here
+                    // Click listeners for active items
                     foundItButton.setOnClickListener {
                         val intent = Intent(context, ChatActivity::class.java)
                         intent.putExtra("ITEM_ID", item.documentId)
@@ -145,29 +141,46 @@ class ItemAdapter(
                         context.startActivity(intent)
                         onItsMineClickListener(item)
                     }
+
+                    if (isOwner) {
+                        markAsClaimedButton.setOnClickListener { onMarkAsClaimedClickListener(item) }
+                    }
                 }
 
                 "found", "claimed" -> {
                     cardView.setCardBackgroundColor(
                         ContextCompat.getColor(context, R.color.item_claimed_background)
                     )
-                    // Once claimed, chat initiation and mark as claimed buttons are hidden
+
+                    // Buttons for claimed/found items (all hidden)
                     foundItButton.visibility = View.GONE
                     itsMineButton.visibility = View.GONE
-                    markAsClaimedButton.visibility = View.GONE // Hide if claimed
+                    markAsClaimedButton.visibility = View.GONE
+
+                    // Labels for claimed/found items
+                    itemTypeLabel.visibility = View.GONE // Ensure type label is hidden
+                    itemClaimedLabel.text = "CLAIMED"
+                    itemClaimedLabel.setBackgroundColor(ContextCompat.getColor(context, R.color.item_type_claimed_background))
+                    itemClaimedLabel.visibility = View.VISIBLE
                 }
 
                 else -> {
                     cardView.setCardBackgroundColor(
-                        ContextCompat.getColor(context, R.color.item_active_background)
+                        ContextCompat.getColor(context, R.color.item_claimed_background) // Fallback background
                     )
+
+                    // Buttons for unknown/other states (all hidden)
                     foundItButton.visibility = View.GONE
                     itsMineButton.visibility = View.GONE
-                    markAsClaimedButton.visibility = View.GONE // Hide for other/unrecognized states
+                    markAsClaimedButton.visibility = View.GONE
+
+                    // Labels for unknown/other states (all hidden)
+                    itemTypeLabel.visibility = View.GONE
+                    itemClaimedLabel.visibility = View.GONE
                 }
             }
 
-            // 🗑 Delete logic - only owner can delete
+            // 🗑 Delete logic - only owner can delete (independent of other buttons/labels)
             if (isOwner) {
                 deleteButton.visibility = View.VISIBLE
                 deleteButton.setOnClickListener { onDeleteItemClickListener(item) }

@@ -19,4 +19,5 @@
     <!-- Item Type Labels -->
     <color name="item_type_lost_background">#FF5252</color> <!-- Red for lost -->
     <color name="item_type_found_background">#4CAF50</color> <!-- Green for found -->
+    <color name="item_type_claimed_background">#757575</color> <!-- Gray for claimed -->
 </resources>

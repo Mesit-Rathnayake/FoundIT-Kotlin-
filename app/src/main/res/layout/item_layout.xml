@@ -60,7 +60,7 @@
             app:layout_constraintStart_toStartOf="@+id/item_description"
             app:layout_constraintTop_toBottomOf="@+id/item_description" />
 
-        <!-- Item Type Label -->
+        <!-- Item Type Label (LOST/FOUND) -->
         <TextView
             android:id="@+id/item_type_label"
             android:layout_width="wrap_content"
@@ -78,6 +78,26 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="LOST" />
+
+        <!-- NEW: Item Claimed Label -->
+        <TextView
+            android:id="@+id/item_claimed_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/rounded_label_background"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="12sp"
+            android:text="CLAIMED"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/button_found_it"
@@ -105,7 +125,7 @@
             app:layout_constraintStart_toEndOf="@+id/button_found_it"
             app:layout_constraintTop_toTopOf="@+id/button_found_it" />
 
-        <!-- NEW: Mark as Claimed Button -->
+        <!-- Mark as Claimed Button -->
         <Button
             android:id="@+id/button_mark_as_claimed"
             style="@style/Widget.Material3.Button.OutlinedButton"
