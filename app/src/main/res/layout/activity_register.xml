@@ -24,7 +24,7 @@
         android:id="@+id/register_subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create an account to start tracking"
+        android:text="Create an account:"
         android:textColor="#546E7A"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/register_title"
