@@ -66,6 +66,11 @@ object ItemRepository {
 
     // --- Insert item with optional image ---
     fun insert(item: Item, imageUri: Uri? = null) {
+        // Generate a document ID upfront
+        val newDocumentRef = itemsCollection.document()
+        val newDocumentId = newDocumentRef.id
+        item.documentId = newDocumentId
+
         if (imageUri != null) {
             val fileName = "images/${UUID.randomUUID()}.jpg"
             val storageRef = storage.reference.child(fileName)
@@ -74,37 +79,25 @@ object ItemRepository {
                 .addOnSuccessListener {
                     storageRef.downloadUrl.addOnSuccessListener { url ->
                         item.imageUrl = url.toString()
-                        saveToFirestore(item)
+                        // Save to Firestore with image URL
+                        newDocumentRef.set(item)
+                            .addOnSuccessListener { Log.d("ItemRepository", "Item saved with image: $newDocumentId") }
+                            .addOnFailureListener { e -> Log.e("ItemRepository", "Error saving item with image: ${e.message}", e) }
                     }
                 }
-                .addOnFailureListener {
-                    Log.e("ItemRepository", "Failed to upload image. Saving item without image.", it)
-                    saveToFirestore(item) // Still attempt to save the item even if image upload fails
+                .addOnFailureListener { e ->
+                    Log.e("ItemRepository", "Failed to upload image. Saving item without image: ${e.message}", e)
+                    // Save to Firestore without image URL if upload fails
+                    newDocumentRef.set(item)
+                        .addOnSuccessListener { Log.d("ItemRepository", "Item saved without image after upload failure: $newDocumentId") }
+                        .addOnFailureListener { eFirestore -> Log.e("ItemRepository", "Error saving item without image after upload failure: ${eFirestore.message}", eFirestore) }
                 }
         } else {
-            saveToFirestore(item)
+            // Save to Firestore directly if no image URI
+            newDocumentRef.set(item)
+                .addOnSuccessListener { Log.d("ItemRepository", "Item saved without image: $newDocumentId") }
+                .addOnFailureListener { e -> Log.e("ItemRepository", "Error saving item without image: ${e.message}", e) }
         }
-    }
-
-    private fun saveToFirestore(item: Item) {
-        // Use add() to let Firestore generate an ID, then update the item with that ID
-        itemsCollection.add(item)
-            .addOnSuccessListener { documentReference ->
-                val newDocumentId = documentReference.id
-                item.documentId = newDocumentId // Update the Item object with the Firestore ID
-                // Now, update the document in Firestore to include this ID within the document itself
-                // This ensures consistency when retrieving the Item object later
-                itemsCollection.document(newDocumentId).set(item)
-                    .addOnSuccessListener {
-                        Log.d("ItemRepository", "Item saved and documentId updated to: $newDocumentId")
-                    }
-                    .addOnFailureListener { e ->
-                        Log.e("ItemRepository", "Error updating item documentId for $newDocumentId: ${e.message}")
-                    }
-            }
-            .addOnFailureListener { e ->
-                Log.e("ItemRepository", "Error adding item to Firestore: ${e.message}")
-            }
     }
 
     fun update(item: Item) {

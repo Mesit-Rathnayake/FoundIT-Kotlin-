@@ -2,10 +2,14 @@ package com.example.foundit
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout // Import ConstraintLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -23,6 +27,9 @@ class ChatActivity : AppCompatActivity() {
     private var currentUserId: String? = null
     private var receiverId: String? = null
     private var itemId: String? = null
+
+    private lateinit var rootChatLayout: ConstraintLayout // Reference to the root layout
+    private lateinit var inputContainer: ConstraintLayout // Reference to the input container
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +51,8 @@ class ChatActivity : AppCompatActivity() {
         chatTitle.text = "Chat about: $itemName"
 
         // Initialize views
+        rootChatLayout = findViewById(R.id.root_chat_layout)
+        inputContainer = findViewById(R.id.input_container)
         chatRecycler = findViewById(R.id.chat_recycler)
         messageInput = findViewById(R.id.chat_input)
         sendButton = findViewById(R.id.chat_send_button)
@@ -98,8 +107,24 @@ class ChatActivity : AppCompatActivity() {
                 messageInput.text.clear()
             }
         }
-        Log.d("ChatActivity", "onCreate finished successfully.")
 
+        // --- Programmatic Window Insets Handling for Keyboard --- //
+        ViewCompat.setOnApplyWindowInsetsListener(rootChatLayout) { view, insets ->
+            val imeInsets = insets.getInsets(WindowInsetsCompat.Type.ime())
+            val systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            // Calculate the total bottom inset (keyboard + system navigation bar)
+            val totalBottomInset = imeInsets.bottom.coerceAtLeast(systemBarsInsets.bottom)
+
+            // Apply this as padding to the input container
+            inputContainer.setPadding(0, 0, 0, totalBottomInset)
+
+            // Consume the insets so they don't get dispatched further
+            insets
+        }
+        // --- End Window Insets Handling --- //
+
+        Log.d("ChatActivity", "onCreate finished successfully.")
     }
 
     // Function to send a message to Firebase

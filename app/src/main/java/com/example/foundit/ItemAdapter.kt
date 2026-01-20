@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide // Import Glide
 import com.example.foundit.models.Item
 import com.google.firebase.auth.FirebaseAuth
 import java.util.Locale
@@ -82,6 +83,19 @@ class ItemAdapter(
             titleTextView.text = item.title
             descriptionTextView.text = item.description
             locationTextView.text = item.location
+
+            // --- Image Loading with Glide (now with placeholder logic) ---
+            itemImageView.visibility = View.VISIBLE // Always make image view visible
+            if (!item.imageUrl.isNullOrEmpty()) {
+                Glide.with(itemView.context)
+                    .load(item.imageUrl)
+                    .into(itemImageView)
+            } else {
+                // Load a default placeholder image
+                Glide.with(itemView.context)
+                    .load(android.R.drawable.ic_menu_gallery) // Using a generic system drawable as placeholder
+                    .into(itemImageView)
+            }
 
             val cardView = itemView as CardView
             val context = itemView.context
